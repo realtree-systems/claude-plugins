@@ -1,0 +1,14 @@
+{
+  "name": "jyro",
+  "displayName": "Jyro",
+  "version": "0.1.0",
+  "description": "Read, write and debug Jyro scripts. Teaches Claude the current Jyro language and standard library, and compiles every .jyro file Claude edits when the jyro CLI is installed.",
+  "author": {
+    "name": "RealTree Systems",
+    "url": "https://github.com/realtree-systems"
+  },
+  "homepage": "https://www.jyro.dev",
+  "repository": "https://github.com/realtree-systems/claude-plugins",
+  "license": "CC-BY-NC-SA-4.0",
+  "keywords": ["jyro", "scripting", "dotnet", "json", "sandbox"]
+}
