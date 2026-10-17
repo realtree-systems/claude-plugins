@@ -1,0 +1,19 @@
+{
+  "name": "realtree-systems",
+  "owner": {
+    "name": "RealTree Systems",
+    "url": "https://github.com/realtree-systems"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for working with RealTree products"
+  },
+  "plugins": [
+    {
+      "name": "jyro",
+      "source": "./plugins/jyro",
+      "description": "Read, write and debug Jyro scripts, with compiler feedback on every edit when the jyro CLI is installed",
+      "category": "development",
+      "tags": ["jyro", "scripting", "dotnet", "json"]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+---
+name: jyro-code
+description: Write, read, debug and review Jyro scripts (.jyro), the sandboxed scripting language that turns Input JSON into Output JSON inside a .NET host. Use whenever a .jyro file is opened, created or edited, when the user asks about Jyro syntax, semantics or its standard library, when a script is embedded in a host such as a RealTreeDB endpoint or trigger, or when a Jyro diagnostic (JM0000-JM5999) needs explaining.
+---
+<!-- generated from jyro-for-llms.md ({{source}}) by tools/jyro/build.py; edit tools/jyro/SKILL.md.tmpl instead -->
+
+# Jyro
+
+Jyro looks familiar and is not. Most wrong Jyro comes from habits carried over from JavaScript, Python or C#, listed in section 2 below. Treat that table as rules, not style.
+
+{{conventions}}
+
+Section numbers in this skill refer to the source document. Where each one lives:
+
+| Sections | File | Read it when |
+| --- | --- | --- |
+| 1, 2, 15 | this file | Always |
+| 3, 14 | [reference/patterns.md](reference/patterns.md) | Starting a script: a complete worked example and verified patterns for filtering, grouping, lookups, validation, dates, money, text, defaults, sorting, nested output |
+| 4 to 11 | [reference/language.md](reference/language.md) | Unsure of a rule: lexical rules, values, truthiness, equality, scope, operator precedence, statements, functions, lambdas, unions |
+| 12 | [reference/stdlib.md](reference/stdlib.md) | Before calling any library function whose exact name, parameter order or null behaviour you have not confirmed. Search it for the name rather than reading it whole |
+| 13 | [reference/errors.md](reference/errors.md) | Explaining a `JMxxxx` diagnostic, or a script near the statement or loop limits |
+| 16 | [reference/running.md](reference/running.md) | Running a script from the command line or a .NET host |
+
+## Working method
+
+1. **Establish the contract.** What `Input` looks like, what `Output` must be, and which host functions exist. A host names its own functions; never invent one. If the shape of `Input` is unknown, ask or state the assumption in a comment at the top of the script.
+2. **Check names before use.** Search [reference/stdlib.md](reference/stdlib.md) for each library function you call. The library has exactly the functions listed there, PascalCase and spelled exactly.
+3. **Write the script**, preferring library functions to loops (section 1: loop iterations are capped across the whole run).
+4. **Verify**, in one of two ways depending on whether the CLI is installed. Find out with `command -v jyro`.
+5. **Report how it was verified**: compiled, run against sample input, tested against expected output, or reviewed by hand only.
+
+### With the jyro CLI
+
+- A plugin hook compiles each `.jyro` file after it is written or edited, and reports the diagnostic when compilation fails. The compiler stops at the first error, so expect one error per round.
+- Compile a script that is not in a `.jyro` file (embedded in C#, JSON or a database) through stdin: `printf '%s\n' "$SCRIPT" | jyro run --stdin -q`. Without `-i`, `Input` is null, so a runtime error about missing input can still mean the script compiled.
+- Run with sample input: `jyro run -s script.jyro -i input.json -q`. Build the sample from the user's description of `Input`, including an edge case such as an empty array or a missing property.
+- Compare with expected output: `jyro test -s script.jyro -i input.json -o expected.json`.
+- Look up a topic or function in the manual that ships with the CLI: `jyro man <topic>` (for example `jyro man round`, `jyro man types`, `jyro man` for the index). Its output has colour codes; pipe it through `perl -pe 's/\e\[[0-9;]*m//g'` to strip them. When the manual and this skill disagree, the installed CLI is the authority.
+- `JM4100 Undefined function` for a function the host documents means the CLI lacks the host's plugin assembly, not that the script is wrong. Say so rather than renaming the call. A `jyro.config.json` with `pluginAssemblies` set lets the hook and `jyro run` see host functions.
+
+### Without the jyro CLI
+
+- Go through the checklist in section 15 item by item against the finished script, then the table in section 2.
+- Trace the script by hand against one concrete `Input`, writing out the `Output` it produces.
+- Tell the user the script has not been compiled, and that installing the `jyro` CLI (see www.jyro.dev) lets Claude compile and run it.
+
+{{section 1}}
+
+{{section 2}}
+
+{{section 15}}

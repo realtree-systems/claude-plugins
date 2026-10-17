@@ -1,0 +1,17 @@
+{
+  "description": "Compile each .jyro file after Claude writes or edits it, when the jyro CLI is installed",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/check-jyro.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
